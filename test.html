@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+
+<script src="/js/script.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let isMultiplication = true
+        for (let i = 0; i < 1000; i++) {
+            const task = generateTask(4, isMultiplication)
+            console.log(task)
+            if (!checkMathSolution(task.question, task.answer)) {
+                console.error('Task is incorrect:', task)
+                alert('Task is incorrect! Check the console for details.')
+                return
+            }
+
+            isMultiplication = !isMultiplication
+        }
+    })
+</script>
+</body>
+</html>

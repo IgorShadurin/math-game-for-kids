@@ -2,9 +2,203 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game for Kids</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        .keyboard { width: 100%; height: 60vh; display: flex; flex-wrap: wrap; margin-top: 20px; }
+        .keyboard button { flex: 1 0 30%; margin: 5px; font-size: 24px; }
+        .task { font-size: 36px; margin-bottom: 20px; }
+        .result { font-size: 36px; }
+        #answer { width: 60px; border-bottom: 2px solid #000; text-align: center; font-size: 36px; display: inline-block; }
+    </style>
 </head>
 <body>
+<div class="container text-center">
+    <div class="row my-3">
+        <div class="col-4 text-start">
+            ✅&nbsp;<span id="correct"> 0 </span>
+        </div>
+        <div class="col-4">
+            <span id="total">0</span>
+        </div>
+        <div class="col-4 text-end">
+            ❌&nbsp;<span id="incorrect"> 0 </span>
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-12">
+            <div class="task mb-3" id="task">
+                <!-- Task will be dynamically generated here -->
+            </div>
+            <div class="keyboard">
+                <button class="btn btn-light">1</button>
+                <button class="btn btn-light">2</button>
+                <button class="btn btn-light">3</button>
+                <button class="btn btn-light">4</button>
+                <button class="btn btn-light">5</button>
+                <button class="btn btn-light">6</button>
+                <button class="btn btn-light">7</button>
+                <button class="btn btn-light">8</button>
+                <button class="btn btn-light">9</button>
+                <button class="btn btn-light" id="delete">⌫</button>
+                <button class="btn btn-light">0</button>
+                <button class="btn btn-primary" id="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal -->
+<div class="modal fade" id="incorrectTasksModal" tabindex="-1" aria-labelledby="incorrectTasksModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="incorrectTasksModalLabel">Incorrect Answers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="incorrectTasksList" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="successAudio" src="/success.mp3"></audio>
+<audio id="failAudio" src="/fail.mp3"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const correct = document.getElementById('correct')
+        const incorrect = document.getElementById('incorrect')
+        const total = document.getElementById('total')
+        const taskEl = document.getElementById('task')
+        const successAudio = document.getElementById('successAudio')
+        const failAudio = document.getElementById('failAudio')
+        const incorrectTasksList = document.getElementById('incorrectTasksList')
+
+        let correctCount = 0
+        let incorrectCount = 0
+        let totalCount = 0
+        let currentTask = {}
+        let incorrectTasks = []
+        let isMultiplication = true
+
+        const generateTask = (number) => {
+            const position = Math.floor(Math.random() * 3)
+            let randomNum = Math.floor(Math.random() * 9) + 1 // Ensure the random number is between 1 and 9
+            let task = {}
+
+            if (isMultiplication) {
+                switch (position) {
+                    case 0:
+                        task = { question: `<span id="answer"></span> x ${number} = ${number * randomNum}`, answer: randomNum }
+                        break
+                    case 1:
+                        task = { question: `${randomNum} = <span id="answer"></span> x ${number}`, answer: randomNum }
+                        break
+                    case 2:
+                        task = { question: `${randomNum} x ${number} = <span id="answer"></span>`, answer: number * randomNum }
+                        break
+                }
+            } else {
+                // Ensure the division task results in an integer answer
+                while (number % randomNum !== 0) {
+                    randomNum = Math.floor(Math.random() * 9) + 1
+                }
+                switch (position) {
+                    case 0:
+                        task = { question: `<span id="answer"></span> ÷ ${number} = ${number / randomNum}`, answer: number / randomNum }
+                        break
+                    case 1:
+                        task = { question: `${number / randomNum} = <span id="answer"></span> ÷ ${number}`, answer: number * randomNum }
+                        break
+                    case 2:
+                        task = { question: `${number} ÷ ${randomNum} = <span id="answer"></span>`, answer: number / randomNum }
+                        break
+                }
+            }
+            return task
+        }
+
+        const renderTaskForUI = (task) => {
+            taskEl.innerHTML = task.question
+        }
+
+        const renderTaskForConsole = (task) => {
+            return task.question.replace(/<span.*?>.*?<\/span>/, '_')
+        }
+
+        const initGame = (number = 4) => {
+            currentTask = generateTask(number)
+            renderTaskForUI(currentTask)
+            isMultiplication = !isMultiplication
+        }
+
+        const checkAnswer = () => {
+            totalCount++
+            total.textContent = totalCount
+            const userAnswer = parseInt(document.getElementById('answer').textContent)
+            if (userAnswer === currentTask.answer && userAnswer > 0) {
+                correctCount++
+                correct.textContent = correctCount
+                successAudio.play()
+                showEmoji('✅')
+            } else {
+                incorrectCount++
+                incorrect.textContent = incorrectCount
+                failAudio.play()
+                showEmoji('❌')
+                incorrectTasks.push({ question: currentTask.question, userAnswer, correctAnswer: currentTask.answer })
+            }
+            initGame()
+        }
+
+        const showEmoji = (emoji) => {
+            taskEl.innerHTML += ` ${emoji}`
+            setTimeout(() => {
+                renderTaskForUI(currentTask)
+            }, 1000)
+        }
+
+        const generateAndLogRandomTasks = (number, count = 100) => {
+            for (let i = 0; i < count; i++) {
+                const task = generateTask(number)
+                console.log(`Task: ${renderTaskForConsole(task)}, Answer: ${task.answer}`)
+            }
+        }
+
+        document.querySelectorAll('.btn-light').forEach(button => {
+            button.addEventListener('click', () => {
+                const answerEl = document.getElementById('answer')
+                answerEl.textContent += button.textContent
+            })
+        })
+
+        document.getElementById('delete').addEventListener('click', () => {
+            const answerEl = document.getElementById('answer')
+            answerEl.textContent = answerEl.textContent.slice(0, -1)
+        })
+
+        document.getElementById('submit').addEventListener('click', checkAnswer)
+
+        incorrect.addEventListener('click', () => {
+            incorrectTasksList.innerHTML = ""
+            const tasksToShow = incorrectTasks.slice(-30).reverse()
+            tasksToShow.forEach(task => {
+                const listItem = document.createElement('li')
+                listItem.className = 'list-group-item'
+                listItem.textContent = `${renderTaskForConsole(task)} Your answer: ${task.userAnswer}, Correct answer: ${task.correctAnswer}`
+                incorrectTasksList.appendChild(listItem)
+            })
+            const modal = new bootstrap.Modal(document.getElementById('incorrectTasksModal'))
+            modal.show()
+        })
+
+        initGame()
+        generateAndLogRandomTasks(4)
+    })
+</script>
 </body>
 </html>

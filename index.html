@@ -6,6 +6,7 @@
     <title>Math Game for Kids</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
+        #stata { font-size: 36px; }
         .keyboard { width: 100%; height: 60vh; display: flex; flex-wrap: wrap; margin-top: 20px; }
         .keyboard button { flex: 1 0 30%; margin: 5px; font-size: 24px; }
         .task { font-size: 36px; margin-bottom: 20px; }
@@ -15,15 +16,15 @@
 </head>
 <body>
 <div class="container text-center">
-    <div class="row my-3">
+    <div id="stata" class="row my-3">
         <div class="col-4 text-start">
-            ✅&nbsp;<span id="correct"> 0 </span>
+            ✅&nbsp;&nbsp;<span id="correct">0</span>
         </div>
         <div class="col-4">
             <span id="total">0</span>
         </div>
         <div class="col-4 text-end">
-            ❌&nbsp;<span id="incorrect"> 0 </span>
+            ❌&nbsp;&nbsp;<span id="incorrect">0</span>
         </div>
     </div>
     <div class="row my-3">
@@ -86,41 +87,41 @@
         let isMultiplication = true
 
         const generateTask = (number) => {
-            const position = Math.floor(Math.random() * 3)
-            let randomNum = Math.floor(Math.random() * 9) + 1 // Ensure the random number is between 1 and 9
-            let task = {}
+            const randomNum = Math.floor(Math.random() * 12) + 1; // Ensure the random number is between 1 and 12
+            const product = number * randomNum; // The result of multiplication which will always be a positive integer
 
-            if (isMultiplication) {
-                switch (position) {
-                    case 0:
-                        task = { question: `<span id="answer"></span> x ${number} = ${number * randomNum}`, answer: randomNum }
-                        break
-                    case 1:
-                        task = { question: `${randomNum} = <span id="answer"></span> x ${number}`, answer: randomNum }
-                        break
-                    case 2:
-                        task = { question: `${randomNum} x ${number} = <span id="answer"></span>`, answer: number * randomNum }
-                        break
-                }
-            } else {
-                // Ensure the division task results in an integer answer
-                while (number % randomNum !== 0) {
-                    randomNum = Math.floor(Math.random() * 9) + 1
-                }
-                switch (position) {
-                    case 0:
-                        task = { question: `<span id="answer"></span> ÷ ${number} = ${number / randomNum}`, answer: number / randomNum }
-                        break
-                    case 1:
-                        task = { question: `${number / randomNum} = <span id="answer"></span> ÷ ${number}`, answer: number * randomNum }
-                        break
-                    case 2:
-                        task = { question: `${number} ÷ ${randomNum} = <span id="answer"></span>`, answer: number / randomNum }
-                        break
-                }
-            }
-            return task
-        }
+            const multiplicationFormats = [
+                { question: `_ = ${number} x ${randomNum}`, answer: product },
+                { question: `_ = ${randomNum} x ${number}`, answer: product },
+                { question: `${number} x ${randomNum} = _`, answer: product },
+                { question: `${randomNum} x ${number} = _`, answer: product },
+                { question: `${product} = _ x ${number}`, answer: randomNum },
+                { question: `${product} = _ x ${randomNum}`, answer: number },
+                { question: `${product} = ${number} x _`, answer: randomNum },
+                { question: `${product} = ${randomNum} x _`, answer: number },
+                { question: `${number} x _ = ${product}`, answer: randomNum },
+                { question: `${randomNum} x _ = ${product}`, answer: number }
+            ];
+
+            const divisionFormats = [
+                { question: `_ = ${product} ÷ ${number}`, answer: randomNum },
+                { question: `_ = ${product} ÷ ${randomNum}`, answer: number },
+                { question: `${product} ÷ ${number} = _`, answer: randomNum },
+                { question: `${product} ÷ ${randomNum} = _`, answer: number },
+                { question: `${randomNum} = ${product} ÷ _`, answer: number },
+                { question: `${number} = ${product} ÷ _`, answer: randomNum },
+                { question: `_ ÷ ${number} = ${randomNum}`, answer: product },
+                { question: `_ ÷ ${randomNum} = ${number}`, answer: product }
+            ];
+
+            const formats = isMultiplication ? multiplicationFormats : divisionFormats;
+            const position = Math.floor(Math.random() * formats.length);
+            const task = formats[position];
+            task.question = task.question.replace('_', '<span id="answer"></span>');
+
+            return task;
+        };
+
 
         const renderTaskForUI = (task) => {
             taskEl.innerHTML = task.question
@@ -139,7 +140,7 @@
         const checkAnswer = () => {
             totalCount++
             total.textContent = totalCount
-            const userAnswer = parseInt(document.getElementById('answer').textContent)
+            const userAnswer = Number(document.getElementById('answer').textContent)
             if (userAnswer === currentTask.answer && userAnswer > 0) {
                 correctCount++
                 correct.textContent = correctCount
@@ -178,7 +179,7 @@
 
         document.getElementById('delete').addEventListener('click', () => {
             const answerEl = document.getElementById('answer')
-            answerEl.textContent = answerEl.textContent.slice(0, -1)
+            answerEl.textContent = answerEl.textContent.slice(0, -2)
         })
 
         document.getElementById('submit').addEventListener('click', checkAnswer)
@@ -197,7 +198,7 @@
         })
 
         initGame()
-        generateAndLogRandomTasks(4)
+        // generateAndLogRandomTasks(4)
     })
 </script>
 </body>

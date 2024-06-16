@@ -12,7 +12,9 @@ function generateTask(number, isMultiplication) {
         {question: `${product} = ${number} x _`, answer: randomNum},
         {question: `${product} = ${randomNum} x _`, answer: number},
         {question: `${number} x _ = ${product}`, answer: randomNum},
-        {question: `${randomNum} x _ = ${product}`, answer: number}
+        {question: `${randomNum} x _ = ${product}`, answer: number},
+        {question: `_ x ${number} = ${product}`, answer: randomNum},
+        {question: `_ x ${randomNum} = ${product}`, answer: number}
     ];
 
     const divisionFormats = [
@@ -22,6 +24,8 @@ function generateTask(number, isMultiplication) {
         {question: `${product} ÷ ${randomNum} = _`, answer: number},
         {question: `${randomNum} = ${product} ÷ _`, answer: number},
         {question: `${number} = ${product} ÷ _`, answer: randomNum},
+        {question: `${product} ÷ _ = ${number}`, answer: randomNum},
+        {question: `${product} ÷ _ = ${randomNum}`, answer: number},
         {question: `_ ÷ ${number} = ${randomNum}`, answer: product},
         {question: `_ ÷ ${randomNum} = ${number}`, answer: product}
     ];

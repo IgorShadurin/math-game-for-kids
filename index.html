@@ -98,7 +98,8 @@
             return task.question.replace(/<span.*?>.*?<\/span>/, '_')
         }
 
-        const initGame = (number = 4) => {
+        const initGame = () => {
+            const number = Math.floor(Math.random() * 12) + 1
             currentTask = generateTask(number, isMultiplication)
             renderTaskForUI(currentTask)
             isMultiplication = !isMultiplication
@@ -130,13 +131,6 @@
             }, 1000)
         }
 
-        const generateAndLogRandomTasks = (number, count = 100) => {
-            for (let i = 0; i < count; i++) {
-                const task = generateTask(number, isMultiplication)
-                console.log(`Task: ${renderTaskForConsole(task)}, Answer: ${task.answer}`)
-            }
-        }
-
         document.querySelectorAll('.btn-light').forEach(button => {
             button.addEventListener('click', () => {
                 const answerEl = document.getElementById('answer')
@@ -165,7 +159,6 @@
         })
 
         initGame()
-        // generateAndLogRandomTasks(4)
     })
 </script>
 </body>

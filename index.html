@@ -98,9 +98,23 @@
             return task.question.replace(/<span.*?>.*?<\/span>/, '_')
         }
 
+        const readTheText = (text) => {
+            if ('speechSynthesis' in window) {
+                const synth = window.speechSynthesis
+                const utterThis = new SpeechSynthesisUtterance(text)
+                utterThis.rate = 0.5
+                synth.speak(utterThis)
+            } else {
+                alert('Speech Synthesis not supported in this browser.');
+            }
+        }
+
         const initGame = () => {
             const number = currentType === 'multiplication' || currentType === 'division' ? getRandomNumber(12) : getRandomNumber(10);
             currentTask = generateTask(number, currentType)
+            setTimeout(() => {
+                readTheText(currentTask.humanReadable)
+            }, 1000)
             renderTaskForUI(currentTask)
             // change currentType to the next type or start over
             currentType = types[types.indexOf(currentType) + 1] || types[0]
@@ -109,7 +123,8 @@
         const checkAnswer = () => {
             totalCount++
             total.textContent = totalCount
-            const userAnswer = Number(document.getElementById('answer').textContent)
+            const answerText = document.getElementById('answer').textContent
+            const userAnswer = Number(answerText)
             if (userAnswer === currentTask.answer && userAnswer > 0) {
                 successAudio.play()
                 correctCount++

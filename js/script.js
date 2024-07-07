@@ -16,68 +16,68 @@ function generateTask(number, type) {
             randomNum = getRandomNumber(12);
             result = number * randomNum;
             formats = [
-                { question: `_ = ${number} x ${randomNum}`, answer: result },
-                { question: `_ = ${randomNum} x ${number}`, answer: result },
-                { question: `${number} x ${randomNum} = _`, answer: result },
-                { question: `${randomNum} x ${number} = _`, answer: result },
-                { question: `${result} = _ x ${number}`, answer: randomNum },
-                { question: `${result} = _ x ${randomNum}`, answer: number },
-                { question: `${result} = ${number} x _`, answer: randomNum },
-                { question: `${result} = ${randomNum} x _`, answer: number },
-                { question: `${number} x _ = ${result}`, answer: randomNum },
-                { question: `${randomNum} x _ = ${result}`, answer: number },
-                { question: `_ x ${number} = ${result}`, answer: randomNum },
-                { question: `_ x ${randomNum} = ${result}`, answer: number },
+                {question: `_ = ${number} x ${randomNum}`, answer: result},
+                {question: `_ = ${randomNum} x ${number}`, answer: result},
+                {question: `${number} x ${randomNum} = _`, answer: result},
+                {question: `${randomNum} x ${number} = _`, answer: result},
+                {question: `${result} = _ x ${number}`, answer: randomNum},
+                {question: `${result} = _ x ${randomNum}`, answer: number},
+                {question: `${result} = ${number} x _`, answer: randomNum},
+                {question: `${result} = ${randomNum} x _`, answer: number},
+                {question: `${number} x _ = ${result}`, answer: randomNum},
+                {question: `${randomNum} x _ = ${result}`, answer: number},
+                {question: `_ x ${number} = ${result}`, answer: randomNum},
+                {question: `_ x ${randomNum} = ${result}`, answer: number},
             ];
             break;
         case 'division':
             randomNum = getRandomNumber(12);
             result = number * randomNum;
             formats = [
-                { question: `_ = ${result} ÷ ${number}`, answer: randomNum },
-                { question: `_ = ${result} ÷ ${randomNum}`, answer: number },
-                { question: `${result} ÷ ${number} = _`, answer: randomNum },
-                { question: `${result} ÷ ${randomNum} = _`, answer: number },
-                { question: `${randomNum} = ${result} ÷ _`, answer: number },
-                { question: `${number} = ${result} ÷ _`, answer: randomNum },
-                { question: `${result} ÷ _ = ${number}`, answer: randomNum },
-                { question: `${result} ÷ _ = ${randomNum}`, answer: number },
-                { question: `_ ÷ ${number} = ${randomNum}`, answer: result },
-                { question: `_ ÷ ${randomNum} = ${number}`, answer: result },
+                {question: `_ = ${result} ÷ ${number}`, answer: randomNum},
+                {question: `_ = ${result} ÷ ${randomNum}`, answer: number},
+                {question: `${result} ÷ ${number} = _`, answer: randomNum},
+                {question: `${result} ÷ ${randomNum} = _`, answer: number},
+                {question: `${randomNum} = ${result} ÷ _`, answer: number},
+                {question: `${number} = ${result} ÷ _`, answer: randomNum},
+                {question: `${result} ÷ _ = ${number}`, answer: randomNum},
+                {question: `${result} ÷ _ = ${randomNum}`, answer: number},
+                {question: `_ ÷ ${number} = ${randomNum}`, answer: result},
+                {question: `_ ÷ ${randomNum} = ${number}`, answer: result},
             ];
             break;
         case 'addition':
             randomNum = getRandomNumber(10);
             result = number + randomNum;
             formats = [
-                { question: `_ = ${number} + ${randomNum}`, answer: result },
-                { question: `_ = ${randomNum} + ${number}`, answer: result },
-                { question: `${number} + ${randomNum} = _`, answer: result },
-                { question: `${randomNum} + ${number} = _`, answer: result },
-                { question: `${result} = _ + ${number}`, answer: randomNum },
-                { question: `${result} = _ + ${randomNum}`, answer: number },
-                { question: `${result} = ${number} + _`, answer: randomNum },
-                { question: `${result} = ${randomNum} + _`, answer: number },
-                { question: `${number} + _ = ${result}`, answer: randomNum },
-                { question: `${randomNum} + _ = ${result}`, answer: number },
-                { question: `_ + ${number} = ${result}`, answer: randomNum },
-                { question: `_ + ${randomNum} = ${result}`, answer: number },
+                {question: `_ = ${number} + ${randomNum}`, answer: result},
+                {question: `_ = ${randomNum} + ${number}`, answer: result},
+                {question: `${number} + ${randomNum} = _`, answer: result},
+                {question: `${randomNum} + ${number} = _`, answer: result},
+                {question: `${result} = _ + ${number}`, answer: randomNum},
+                {question: `${result} = _ + ${randomNum}`, answer: number},
+                {question: `${result} = ${number} + _`, answer: randomNum},
+                {question: `${result} = ${randomNum} + _`, answer: number},
+                {question: `${number} + _ = ${result}`, answer: randomNum},
+                {question: `${randomNum} + _ = ${result}`, answer: number},
+                {question: `_ + ${number} = ${result}`, answer: randomNum},
+                {question: `_ + ${randomNum} = ${result}`, answer: number},
             ];
             break;
         case 'subtraction':
             randomNum = getRandomNumber(10);
             result = number + randomNum;
             formats = [
-                { question: `_ = ${result} - ${number}`, answer: randomNum },
-                { question: `_ = ${result} - ${randomNum}`, answer: number },
-                { question: `${result} - ${number} = _`, answer: randomNum },
-                { question: `${result} - ${randomNum} = _`, answer: number },
-                { question: `${randomNum} = ${result} - _`, answer: number },
-                { question: `${number} = ${result} - _`, answer: randomNum },
-                { question: `${result} - _ = ${number}`, answer: randomNum },
-                { question: `${result} - _ = ${randomNum}`, answer: number },
-                { question: `_ - ${number} = ${randomNum}`, answer: result },
-                { question: `_ - ${randomNum} = ${number}`, answer: result },
+                {question: `_ = ${result} - ${number}`, answer: randomNum},
+                {question: `_ = ${result} - ${randomNum}`, answer: number},
+                {question: `${result} - ${number} = _`, answer: randomNum},
+                {question: `${result} - ${randomNum} = _`, answer: number},
+                {question: `${randomNum} = ${result} - _`, answer: number},
+                {question: `${number} = ${result} - _`, answer: randomNum},
+                {question: `${result} - _ = ${number}`, answer: randomNum},
+                {question: `${result} - _ = ${randomNum}`, answer: number},
+                {question: `_ - ${number} = ${randomNum}`, answer: result},
+                {question: `_ - ${randomNum} = ${number}`, answer: result},
             ];
             break;
         default:
@@ -86,6 +86,7 @@ function generateTask(number, type) {
 
     const position = Math.floor(Math.random() * formats.length);
     const task = formats[position];
+    task.humanReadable = task.question.replace('_', 'something').replace('x', 'times').replace('÷', 'divided by').replace('+', 'plus').replace('-', 'minus').replace('=', ', equals');
     task.question = task.question.replace('_', '<span id="answer"></span>');
 
     return task;

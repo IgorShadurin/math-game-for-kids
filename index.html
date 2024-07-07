@@ -24,7 +24,7 @@
             ✅&nbsp;&nbsp;<span id="correct">0</span>
         </div>
         <div class="col-4">
-            <span id="total">0</span>
+            <span id="total" style="display: none">0</span>
         </div>
         <div class="col-4 text-end">
             ❌&nbsp;&nbsp;<span id="incorrect">0</span>
@@ -88,7 +88,7 @@
         let totalCount = 0
         let currentTask = {}
         let incorrectTasks = []
-        let isMultiplication = true
+        let currentType = types[0]
 
         const renderTaskForUI = (task) => {
             taskEl.innerHTML = task.question
@@ -99,10 +99,11 @@
         }
 
         const initGame = () => {
-            const number = Math.floor(Math.random() * 12) + 1
-            currentTask = generateTask(number, isMultiplication)
+            const number = currentType === 'multiplication' || currentType === 'division' ? getRandomNumber(12) : getRandomNumber(10);
+            currentTask = generateTask(number, currentType)
             renderTaskForUI(currentTask)
-            isMultiplication = !isMultiplication
+            // change currentType to the next type or start over
+            currentType = types[types.indexOf(currentType) + 1] || types[0]
         }
 
         const checkAnswer = () => {
@@ -110,14 +111,14 @@
             total.textContent = totalCount
             const userAnswer = Number(document.getElementById('answer').textContent)
             if (userAnswer === currentTask.answer && userAnswer > 0) {
+                successAudio.play()
                 correctCount++
                 correct.textContent = correctCount
-                successAudio.play()
                 showEmoji('✅')
             } else {
+                failAudio.play()
                 incorrectCount++
                 incorrect.textContent = incorrectCount
-                failAudio.play()
                 showEmoji('❌')
                 incorrectTasks.push({ question: currentTask.question, userAnswer, correctAnswer: currentTask.answer })
             }

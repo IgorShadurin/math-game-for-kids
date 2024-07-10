@@ -6,19 +6,49 @@
     <title>Math Game for Kids</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
-        #stata { font-size: 36px; }
-        .keyboard { width: 100%; height: 60vh; display: flex; flex-wrap: wrap; margin-top: 20px; }
-        .keyboard button { flex: 1 0 30%; margin: 5px; font-size: 24px; }
-        .task { font-size: 36px; margin-top: 5rem; margin-bottom: 5rem; }
-        .result { font-size: 36px; }
-        #answer { width: 60px; border-bottom: 2px solid #000; text-align: center; font-size: 36px; display: inline-block; }
+        #stata {
+            font-size: 36px;
+        }
+
+        .keyboard {
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .keyboard button {
+            flex: 1 0 30%;
+            margin: 5px;
+            font-size: 24px;
+        }
+
+        .task {
+            font-size: 36px;
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+        }
+
+        .result {
+            font-size: 36px;
+        }
+
+        #answer {
+            width: 60px;
+            border-bottom: 2px solid #000;
+            text-align: center;
+            font-size: 36px;
+            display: inline-block;
+        }
+
         button {
             touch-action: manipulation;
         }
     </style>
 </head>
 <body>
-<div class="container text-center">
+<div id="the-game" class="container text-center d-none">
     <div id="stata" class="row my-3">
         <div class="col-4 text-start">
             ✅&nbsp;&nbsp;<span id="correct">0</span>
@@ -52,9 +82,17 @@
         </div>
     </div>
 </div>
+<div id="choose-scene" class="container text-center p-5">
+    <button id="start-multiply-divide" class="btn btn-lg btn-primary">x and ÷</button>
+    <br>
+    <button id="start-plus-minus" class="btn btn-lg btn-primary mt-3">+ and -</button>
+    <br>
+    <button id="start-all" class="btn btn-lg btn-primary mt-3">All</button>
+</div>
 
 <!-- Modal -->
-<div class="modal fade" id="incorrectTasksModal" tabindex="-1" aria-labelledby="incorrectTasksModalLabel" aria-hidden="true">
+<div class="modal fade" id="incorrectTasksModal" tabindex="-1" aria-labelledby="incorrectTasksModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,7 +112,7 @@
 <script src="/js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const correct = document.getElementById('correct')
         const incorrect = document.getElementById('incorrect')
         const total = document.getElementById('total')
@@ -88,7 +126,8 @@
         let totalCount = 0
         let currentTask = {}
         let incorrectTasks = []
-        let currentType = types[0]
+        let currentType
+        let allowedTypes
 
         const renderTaskForUI = (task) => {
             taskEl.innerHTML = task.question
@@ -110,14 +149,20 @@
         }
 
         const initGame = () => {
+            if (!currentType) {
+                currentType = allowedTypes[0]
+            }
+
+            document.getElementById('the-game').classList.remove('d-none')
+            document.getElementById('choose-scene').classList.add('d-none')
             const number = currentType === 'multiplication' || currentType === 'division' ? getRandomNumber(12) : getRandomNumber(10);
             currentTask = generateTask(number, currentType)
             setTimeout(() => {
-                readTheText(currentTask.humanReadable)
+                // readTheText(currentTask.humanReadable)
             }, 1000)
             renderTaskForUI(currentTask)
             // change currentType to the next type or start over
-            currentType = types[types.indexOf(currentType) + 1] || types[0]
+            currentType = allowedTypes[allowedTypes.indexOf(currentType) + 1] || allowedTypes[0]
         }
 
         const checkAnswer = () => {
@@ -135,7 +180,7 @@
                 incorrectCount++
                 incorrect.textContent = incorrectCount
                 showEmoji('❌')
-                incorrectTasks.push({ question: currentTask.question, userAnswer, correctAnswer: currentTask.answer })
+                incorrectTasks.push({question: currentTask.question, userAnswer, correctAnswer: currentTask.answer})
             }
             initGame()
         }
@@ -174,7 +219,18 @@
             modal.show()
         })
 
-        initGame()
+        document.getElementById('start-multiply-divide').addEventListener('click', () => {
+            allowedTypes = ['multiplication', 'division']
+            initGame()
+        })
+        document.getElementById('start-plus-minus').addEventListener('click', () => {
+            allowedTypes = ['addition', 'subtraction']
+            initGame()
+        })
+        document.getElementById('start-all').addEventListener('click', () => {
+            allowedTypes = ['multiplication', 'division', 'addition', 'subtraction']
+            initGame()
+        })
     })
 </script>
 </body>

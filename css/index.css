@@ -1,0 +1,58 @@
+#stata {
+    font-size: 36px;
+}
+
+.keyboard {
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.keyboard button {
+    flex: 1 0 30%;
+    margin: 5px;
+    font-size: 24px;
+}
+
+.task {
+    font-size: 36px;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.result {
+    font-size: 36px;
+}
+
+#answer {
+    width: 60px;
+    border-bottom: 2px solid #000;
+    text-align: center;
+    font-size: 36px;
+    display: inline-block;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+/** Personage image **/
+#imageContainer {
+    position: fixed;
+    top: 50%;
+    right: -100%;
+    transform: translateY(-50%);
+    transition: right 0.5s ease-in-out;
+}
+
+#imageContainer.visible {
+    right: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

@@ -86,6 +86,7 @@
         const failAudio = document.getElementById('failAudio')
         const incorrectTasksList = document.getElementById('incorrectTasksList')
 
+        const totalPersonages = 23
         let correctCount = 0
         let incorrectCount = 0
         let totalCount = 0
@@ -93,6 +94,26 @@
         let incorrectTasks = []
         let currentType
         let allowedTypes
+
+        async function preloadImages(totalPersonages) {
+            const loadSingleImage = async (src) => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = src;
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
+            };
+
+            const imagePromises = [];
+            for (let i = 1; i <= totalPersonages; i++) {
+                const imageSrc = `./img/personage-${i}.png`;
+                imagePromises.push(loadSingleImage(imageSrc));
+            }
+
+            // Use Promise.allSettled to handle both resolved and rejected promises
+            await Promise.allSettled(imagePromises);
+        }
 
         const renderTaskForUI = (task) => {
             taskEl.innerHTML = task.question
@@ -131,7 +152,7 @@
         }
 
         const showPersonage = () => {
-            const randomImageNumber = getRandomNumber(10)
+            const randomImageNumber = getRandomNumber(totalPersonages)
             document.getElementById('slidingImage').src = `./img/personage-${randomImageNumber}.png`
             const imageContainer = document.getElementById('imageContainer');
             imageContainer.classList.toggle('visible');
@@ -211,6 +232,8 @@
             allowedTypes = ['multiplication', 'division', 'addition', 'subtraction']
             initGame()
         })
+
+        preloadImages(totalPersonages)
     })
 </script>
 </body>

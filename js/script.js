@@ -1,6 +1,18 @@
 const types = ['multiplication', 'division', 'addition', 'subtraction'];
 
-const getRandomNumber = (max) => Math.floor(Math.random() * max) + 1;
+const getRandomNumber = (max, exclude = []) => {
+    let randomNumber;
+    const excludeSet = new Set(exclude);
+    let attempts = 0;
+    const maxAttempts = 20;
+
+    do {
+        randomNumber = Math.floor(Math.random() * max) + 1;
+        attempts++;
+    } while (excludeSet.has(randomNumber) && attempts < maxAttempts);
+
+    return randomNumber;
+}
 
 /**
  * Generates a math task based on the specified type and number

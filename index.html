@@ -87,6 +87,7 @@
         const incorrectTasksList = document.getElementById('incorrectTasksList')
 
         const totalPersonages = 23
+        const personagesHistory = []
         let correctCount = 0
         let incorrectCount = 0
         let totalCount = 0
@@ -152,7 +153,9 @@
         }
 
         const showPersonage = () => {
-            const randomImageNumber = getRandomNumber(totalPersonages)
+            // todo generate the array of personages sequence on init and use the sequence to show the personages, revert getRandomNumber to the original
+            const randomImageNumber = getRandomNumber(totalPersonages, personagesHistory)
+            personagesHistory.push(randomImageNumber)
             document.getElementById('slidingImage').src = `./img/personage-${randomImageNumber}.png`
             const imageContainer = document.getElementById('imageContainer');
             imageContainer.classList.toggle('visible');
